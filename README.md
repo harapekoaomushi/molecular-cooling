@@ -154,6 +154,14 @@ Result:
  2.02394765e-199 2.04389197e-224 6.94153096e-251]
 ```
 
+## Equations
+### Einstein A coefficients for rotational transitions `AJ`
+![AJ](./fig/rotatinal_A.png)
+```
+A_{J+1,J} = \frac{16 \pi^3}{3\epsilon_0 h c^3}\frac{\mu_v^2}{3}\{2(J+1)B_v\}^3
+```
+
+where *μ*<sub>*v*</sub> : permanent dipole moment of *v*-level, *B*<sub>*v*</sub> : rotational constants of *v*-level.
 
 ## License
 MIT License
