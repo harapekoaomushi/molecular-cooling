@@ -2,15 +2,14 @@ import numpy as np
 from scipy import constants as sciconst
 
 class molecular_const:
-    def __init__(self, B_hz, AJ, E0J, T_init = 300):
-        self.T_BBR = 4
+    def __init__(self, B_hz, AJ, E0J, T_init = 300., T_BBR = 4.):
         self.T_init = T_init
         self.v_num = AJ.shape[0]
         self.J0_num = AJ.shape[1]
         
         # Stimulated emission/absorption of rotational Transitions for specific vibrational state in ground electronic state
         # gJ[v,J]
-        self.gJ = 3* self.AJ / (np.exp(2 * (np.concatenate([[np.inf],np.arange(1,self.J0_num, dtype=np.float64)])+0)*sciconst.h*B_hz.reshape(B_hz.shape[0],1) / (sciconst.k * self.T_BBR) ) -1)
+        self.gJ = 3* self.AJ / (np.exp(2 * (np.concatenate([[np.inf],np.arange(1,self.J0_num, dtype=np.float64)])+0)*sciconst.h*B_hz.reshape(B_hz.shape[0],1) / (sciconst.k * T_BBR) ) -1)
         
         """
         # g0, g1, g2

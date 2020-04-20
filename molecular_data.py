@@ -3,7 +3,7 @@ from scipy import constants as sciconst
 from molecular_parameters import molecular_const
 
 class CaH(molecular_const):
-    def __init__(self, T_init = 300):
+    def __init__(self, T_init = 300., T_BBR = 4.):
         # permanent dipole moments (PDMs)
         # cited from M Abe et al., J. Phys. B 43, 245102 (2010)
         # http://dx.doi.org/10.1088/0953-4075/43/24/245102
@@ -65,12 +65,12 @@ class CaH(molecular_const):
         
         #self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
         
-        super().__init__(self.B_hz, self.AJ, self.E0J, T_init)
+        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
 
 
 
 class HD(molecular_const):
-    def __init__(self, T_init = 300):
+    def __init__(self, T_init = 300., T_BBR = 4.):
         
         
         # Radiative lifetime tau[J,v]
@@ -139,5 +139,5 @@ class HD(molecular_const):
         
         # self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
         
-        super().__init__(self.B_hz, self.AJ, self.E0J, T_init)
+        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
         
