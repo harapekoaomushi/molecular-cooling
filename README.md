@@ -10,7 +10,7 @@ simulation for molecular rotational cooling
 git clone https://github.com/harapekoaomushi/molecular-cooling.git
 ```
 
-## Usage
+## Common Usage
 1. `cd molecular-cooling`
 1. Launch the python3 interpreter `python`.
 1. Load the module of individual molecular data. `from molecular_data import CaH`
@@ -24,6 +24,21 @@ git clone https://github.com/harapekoaomushi/molecular-cooling.git
 1. Save the result as csv. `sim.save_csv("./export/CaH_T300_PumpOFF.csv")`
 
 You can use `sim.draw_sum()` to check the sum of the populations for debug.
+
+## Reference
+```
+molecular_data.CaH(T_init = 300)
+```
+### Parameters
+* T_init : *int, optional*
+
+Initial rotational temperature in Kelvin. Default is 300.
+
+### Class member
+* `AJ` : *ndarray*
+
+Einstein A coefficients for rotational transitions. AJ[v,J] indicate A coefficients from J to J-1 when the vibrational level is v. Unit: s<sup>-1</sup>
+
 
 ## Example
 ### CaH, No optical pumping, Initial vibrational temperature: 300 K
@@ -41,7 +56,76 @@ sim.save_csv("./export/CaH_T300_PumpOFF.csv")
 ```
 
 #### Result
-![Result](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/CaH_T300_PumpOFF.png)
+![Result CaH_T300_PumpOFF](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/CaH_T300_PumpOFF.png)
+
+### CaH, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
+#### Code
+```
+from molecular_data import CaH
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol = CaH(T_init = 300)
+sim = molecular_rotational_cooling(mol)
+sim.run(sim.population_ode, vJ_pump_i=[0,1], vJ_pump_f=[2,0], GP=10*(10**3), t_max=10000)
+#sim.draw()
+sim.save_fig("./export/CaH_T300_PumpON01_20.png", t_max=10000)
+sim.save_csv("./export/CaH_T300_PumpON01_20.csv")
+```
+
+#### Result
+![Result CaH_T300_PumpON01_20](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/CaH_T300_PumpON01_20.png)
+
+### HD, No optical pumping, Initial vibrational temperature: 1000 K
+#### Code
+```
+from molecular_data import HD
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol = HD(T_init = 1000)
+sim_HD1 = molecular_rotational_cooling(mol)
+sim_HD1.run(sim_HD1.population_ode, GP=0, t_max=1500)
+#sim_HD1.draw_sum()
+sim_HD1.save_fig("./export/HD_T1000_PumpOFF.png", t_max=1500)
+sim_HD1.save_csv("./export/HD_T1000_PumpOFF.csv")
+```
+
+#### Result
+![Result HD_T1000_PumpOFF](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/HD_T1000_PumpOFF.png)
+
+### HD, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
+#### Code
+```
+from molecular_data import HD
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol = HD(T_init = 1000)
+sim_HD2 = molecular_rotational_cooling(mol)
+sim_HD2.run(sim_HD2.population_ode, vJ_pump_i=[0,1], vJ_pump_f=[2,0], GP=10*(10**3), t_max=1500)
+#sim_HD2.draw_sum()
+sim_HD2.save_fig("./export/HD_T1000_PumpON01to20.png", t_max=1500)
+sim_HD2.save_csv("./export/HD_T1000_PumpON01to20.csv")
+```
+
+#### Result
+![Result HD_T1000_PumpON01to20](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/HD_T1000_PumpON01to20.png)
+
+### HD, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 1000 K
+#### Code
+```
+from molecular_data import HD
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol = HD(T_init = 1000)
+sim_HD3 = molecular_rotational_cooling(mol)
+sim_HD3.run(sim_HD3.population_ode, vJ_pump_i=[0,2], vJ_pump_f=[2,1], GP=10*(10**3), t_max=1500)
+#sim_HD3.draw_sum()
+sim_HD3.save_fig("./export/HD_T1000_PumpON02to21.png", t_max=1500)
+sim_HD3.save_csv("./export/HD_T1000_PumpON02to21.csv")
+```
+
+#### Result
+![Result HD_T1000_PumpON02to21](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/HD_T1000_PumpON02to21.png)
+
 
 ## License
 MIT License
