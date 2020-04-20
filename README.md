@@ -156,7 +156,7 @@ Result:
 
 ## Equations
 ### Einstein A coefficients for rotational transitions `AJ`
-![AJ](./fig/rotatinal_A.png)
+<img alt="AJ" src=./fig/rotatinal_A.png width="min-height:80px">
 ```
 A_{J+1,J} = \frac{16 \pi^3}{3\epsilon_0 h c^3}\frac{\mu_v^2}{3}\{2(J+1)B_v\}^3
 ```
