@@ -23,6 +23,24 @@ git clone https://github.com/harapekoaomushi/molecular-cooling.git
 1. Save the figure. `sim.save_fig("./export/CaH_T300_PumpOFF.png", t_max=10000)`
 1. Save the result as csv. `sim.save_csv("./export/CaH_T300_PumpOFF.csv")`
 
+You can use `sim.draw_sum()` to check the sum of the populations for debug.
+
+## Example
+### CaH, No optical pumping, Initial vibrational temperature: 300 K
+#### Code
+```
+from molecular_data import CaH
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol = CaH(T_init = 300)
+sim = molecular_rotational_cooling(mol)
+sim.run(sim.population_ode, GP=0, t_max=10000)
+#sim.draw()
+sim.save_fig("./export/CaH_T300_PumpOFF.png", t_max=10000)
+sim.save_csv("./export/CaH_T300_PumpOFF.csv")
+```
+
+#### Result
 ![Result](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/CaH_T300_PumpOFF.png)
 
 ## License
