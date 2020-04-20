@@ -155,7 +155,7 @@ Result:
 ```
 
 ## Equations
-### Einstein A coefficients for rotational transitions `AJ`
+### Einstein A coefficients for rotational transitions *A*<sub>*J+1,J*</sub> `AJ`
 <img alt="AJ" src=./fig/AJ.png height="80px">
 
 [TeX]
@@ -163,9 +163,13 @@ Result:
 A_{J+1,J} = \frac{16 \pi^3}{3\epsilon_0 h c^3}\frac{\mu_v^2}{3}\{2(J+1)B_v\}^3
 ```
 
-where *μ*<sub>*v*</sub> : permanent dipole moment of *v*-level, *B*<sub>*v*</sub> : rotational constants of *v*-level.
+where
 
-### Rotational transition rate by blackbody radiation `gJ`
+*μ*<sub>*v*</sub> : permanent dipole moment of *v*-level and
+
+*B*<sub>*v*</sub> : rotational constants of *v*-level.
+
+### Rotational transition rate by blackbody radiation *γ*<sub>*J+1,J*</sub> `gJ`
 <img alt="AJ" src=./fig/gJ.png height="80px">
 
 [TeX]
@@ -173,16 +177,29 @@ where *μ*<sub>*v*</sub> : permanent dipole moment of *v*-level, *B*<sub>*v*</su
 \gamma_{J+1,J} = \frac{3A_{J+1,J}}{\exp[2(J+1)hB_v/k_BT]-1}
 ```
 
-where *μ*<sub>*v*</sub> : permanent dipole moment of *v*-level, *B*<sub>*v*</sub> : rotational constants of *v*-level, *A*<sub>*J+1,J*</sub> : Einstein A coefficients for rotational transitions from *J*+1 to *J*.
+where
+
+*μ*<sub>*v*</sub> : permanent dipole moment of *v*-level,
+
+*B*<sub>*v*</sub> : rotational constants of *v*-level and
+
+*A*<sub>*J+1,J*</sub> : Einstein A coefficients for rotational transitions from *J*+1 to *J*.
 
 ### Rate equation
-<img alt="dndt" src=./fig/dndt.png height="120px">
+<img alt="dndt" src=./fig/dndt.png>
 
 [TeX]
 ```
 \frac{dn_J}{dt} = -(\gamma_{J+1,J}+\gamma_{J,J-1}+A_{J,J-1})n_J + (\gamma_{J+1,J}+A_{J+1,J})n_{J+1} + \gamma_{J,J-1}n_{J-1}
 ```
 
+where
+
+*A*<sub>*J+1,J*</sub> : Einstein A coefficients for rotational transitions from *J*+1 to *J*,
+
+*γ*<sub>*J+1,J*</sub> : rotational transition rate by blackbody radiation from *J*+1 to *J* and
+
+*n*<sub>*J*</sub> : population of *J*-level.
 
 ## License
 MIT License
