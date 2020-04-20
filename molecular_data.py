@@ -1,0 +1,143 @@
+import numpy as np
+from scipy import constants as sciconst
+from molecular_parameters import molecular_const
+
+class CaH(molecular_const):
+    def __init__(self, T_init = 300):
+        # permanent dipole moments (PDMs)
+        # cited from M Abe et al., J. Phys. B 43, 245102 (2010)
+        # http://dx.doi.org/10.1088/0953-4075/43/24/245102
+        # mu[v] : [Debye]
+        # mu_Cm[v] : [C*m]
+        self.mu = np.array([5.310, 5.344, 5.365, 5.369, 5.353, 5.310, 5.233, 5.117, 4.954, 4.739, 4.466, 4.134, 3.745, 3.303, 2.817, 2.297, 1.759, 1.242, 0.875]) #[Debye]
+        self.mu_Cm = self.mu/sciconst.c*(10**-21) # [C*m]
+        
+        self.J0_num = 19 # the number of considering rotational energy levels regarding v=1
+        
+        # rotational constants
+        # cited from M Abe et al., J. Phys. B 43, 245102 (2010)
+        # http://dx.doi.org/10.1088/0953-4075/43/24/245102
+        # B[v]: [cm^-1]
+        # B_hz[v] : [s^-1]
+        self.B = np.array([4.711, 4.615, 4.516, 4.414, 4.307, 4.194, 4.073, 3.944, 3.805, 3.652, 3.483, 3.295, 3.083, 2.843, 2.567, 2.248, 1.870, 1.414, 0.847]) # [cm^-1]
+        self.B_hz = self.B * sciconst.c * (10**2)
+        
+        # Vibrational energy levels
+        # cited from M Abe et al., J. Phys. B 43, 245102 (2010)
+        # http://dx.doi.org/10.1088/0953-4075/43/24/245102
+        # Ev[v] : [cm^-1]
+        self.Ev = np.array([736, 2177, 3579, 4938, 6253, 7520, 8737, 9901, 11006, 12049, 13024, 13923, 14740, 15466, 16093, 16609, 17006, 17274, 17410]) #[cm^-1]
+        
+        # Transition dipole moments (TDMs)
+        # cited from M Abe et al., J. Phys. B 43, 245102 (2010)
+        # http://dx.doi.org/10.1088/0953-4075/43/24/245102
+        # TDM[v_init, v_fin] : [Debye] (L=0)
+        # TDM_Cm[v_init, v_fin] : [C*m] (L=0)
+        self.TDM = np.empty([5,4])
+        self.TDM[:,:] = np.nan
+        self.TDM[1,0] = 0.13
+        self.TDM[2,0] = 0.05
+        self.TDM[2,1] = 0.15
+        self.TDM[3,0] = 0.01
+        self.TDM[3,1] = 0.08
+        self.TDM[3,2] = 0.15
+        self.TDM[4,0] = 0.00
+        self.TDM[4,1] = 0.02
+        self.TDM[4,2] = 0.12
+        self.TDM[4,3] = 0.11
+        
+        self.TDM_Cm = self.TDM/sciconst.c*(10**-21)
+        
+        self.v_num = self.TDM.shape[0] # the number of considering vibrational energy levels
+        
+        # E0J[J] : [cm^-1]
+        # E1J[J] : [cm^-1]
+        self.E0J = self.B[0]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64) + 1)
+        self.E1J = self.B[1]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64) + 1)+(self.Ev[1] - self.Ev[0])
+        
+        # Eistein A-coeffcient of rotational Transitions for specific vibrational state in ground electronic state
+        # AJ[v,J] : [s^-1]
+        self.AJ = 16*(sciconst.pi**3)*(self.mu_Cm.reshape(self.mu_Cm.shape[0],1)**2)*((2* (np.arange(-1, self.J0_num-1, dtype=np.float64)+1) * self.B_hz.reshape(self.B_hz.shape[0],1))**3) / (3*sciconst.epsilon_0*sciconst.h*(sciconst.c**3)*3)
+        
+        # Einstein A-coefficient of vibrational Transitions in ground electronic state
+        # Av[v_init, v_fin] : [s^-1]
+        self.Av = np.array([[16*(sciconst.pi**3)*((sciconst.c*(self.Ev[i]-self.Ev[j])*100)**3) *(self.TDM_Cm[i,j]**2) / (3 * sciconst.h * sciconst.epsilon_0*(sciconst.c**3)) for j in range(self.TDM.shape[1])] for i in range(self.TDM.shape[0])])
+        
+        #self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
+        
+        super().__init__(self.B_hz, self.AJ, self.E0J, T_init)
+
+
+
+class HD(molecular_const):
+    def __init__(self, T_init = 300):
+        
+        
+        # Radiative lifetime tau[J,v]
+        # cited from Z Amitay et al., Phys. Rev. A 50, 2304 (1994)
+        # https://doi.org/10.1103/PhysRevA.50.2304
+        # tau[v,J] : [s]
+        self.tau = np.array([[np.inf, 140.24, 14.61, 4.04, 1.64, 0.823, 0.469, 0.292],[0.059, 0.059, 0.058, 0.057, 0.055, 0.052, 0.049, 0.045],[0.032, 0.032, 0.031, 0.031, 0.030, 0.029, 0.027, 0.026],[0.023, 0.023, 0.023, 0.022, 0.022, 0.021, 0.020, 0.019],[0.019, 0.019, 0.018, 0.018, 0.018, 0.017, 0.016, 0.015],[0.016, 0.016, 0.016, 0.016, 0.015, 0.015, 0.014, 0.013],[0.015, 0.015, 0.014, 0.014, 0.014, 0.013, 0.013, 0.012],[0.014, 0.014, 0.013, 0.013, 0.013, 0.012, 0.012, 0.011],[0.013, 0.013, 0.013, 0.013, 0.012, 0.012, 0.011, 0.010],[0.013, 0.013, 0.013, 0.012, 0.012, 0.011, 0.011, 0.010],[0.013, 0.013, 0.013, 0.012, 0.012, 0.011, 0.011, 0.010]]) #[s]
+        
+        
+        # Eistein A-coeffcient of rotational Transitions for specific vibrational state in ground electronic state
+        # AJ[v,J] : [s^-1]
+        self.AJ = 1/self.tau
+        
+        self.v_num = self.AJ.shape[0] # the number of considering vibrational energy levels
+        self.J0_num = self.AJ.shape[1] # the number of considering rotational energy levels regarding v=1
+        
+        # rotational constants
+        # rotational constant of neutral HD
+        # http://www.lifesci.sussex.ac.uk/research/fluorine/p5qsp3l/sw_teaching/f1177_html/rotlab/node15.html
+        # B[v]: [cm^-1]
+        # B_hz[v] : [s^-1]
+        self.B = np.array([45.644]*self.v_num) # [cm^-1]
+        self.B_hz = self.B * sciconst.c * (10**2)
+        
+        
+        # Vibrational energy levels （v=0-2があればいい）
+        # cited from H O Pilon et al., Phys. Rev. A 88, 032502 (2013)
+        # http://dx.doi.org/10.1103/PhysRevA.88.032502
+        # Ev_eV[v] : [eV] (L=0)
+        # Ev[v] : [cm^-1] (L=0)
+        self.Ev_eV = np.array([-0.5978979686451, -0.589181829652, -0.58090370033, -0.5730505461]) #[eV]
+        self.Ev = self.Ev_eV * sciconst.e/(sciconst.c*sciconst.h*100) #[cm^-1]
+        
+        # Transition dipole moments (TDMs) （v=0-2があればいい）
+        # TDM[v_init, v_fin] : [Debye] (L=0)
+        # TDM_Cm[v_init, v_fin] : [C*m] (L=0)
+        #self.TDM = np.empty([4,3])
+        #self.TDM[:,:] = np.nan
+        #self.TDM[1,0] =
+        #self.TDM[2,0] =
+        #self.TDM[2,1] =
+        #self.TDM[3,0] =
+        #self.TDM[3,1] =
+        #self.TDM[3,2] =
+        
+        #self.TDM_Cm = self.TDM/sciconst.c*(10**-21)
+        
+        # E0J[J] : [cm^-1]
+        # E1J[J] : [cm^-1]
+        self.E0J = self.B[0]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)
+        self.E1J = self.B[1]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)+(self.Ev[1] - self.Ev[0])
+        
+        # Einstein A-coefficient of vibrational Transitions in ground electronic state
+        # cited from H O Pilon et al., Phys. Rev. A 88, 032502 (2013)
+        # http://dx.doi.org/10.1103/PhysRevA.88.032502
+        # Av[v_init, v_fin] : [s^-1]
+        self.Av = np.empty([4,3])
+        self.Av[:,:] = np.nan
+        self.Av[1,0] = 18.3121
+        self.Av[2,0] = 2.01840
+        self.Av[2,1] = 32.0868
+        self.Av[3,0] = 0.302344
+        self.Av[3,1] = 5.19059
+        self.Av[3,2] = 42.0638
+        #self.Av = np.array([[16*(sciconst.pi**3)*((sciconst.c*(self.Ev[i]-self.Ev[j])*100)**3) *(self.TDM_Cm[i,j]**2) / (3 * sciconst.h * sciconst.epsilon_0*(sciconst.c**3)) for j in range(self.TDM.shape[1])] for i in range(self.TDM.shape[0])])
+        
+        # self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
+        
+        super().__init__(self.B_hz, self.AJ, self.E0J, T_init)
+        
