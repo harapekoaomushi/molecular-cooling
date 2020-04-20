@@ -25,20 +25,6 @@ git clone https://github.com/harapekoaomushi/molecular-cooling.git
 
 You can use `sim.draw_sum()` to check the sum of the populations for debug.
 
-## Reference
-```
-molecular_data.CaH(T_init = 300)
-```
-### Parameters
-* T_init : *int, optional*
-
-Initial rotational temperature in Kelvin. Default is 300.
-
-### Class member
-* `AJ` : *ndarray*
-
-Einstein A coefficients for rotational transitions. AJ[v,J] indicate A coefficients from J to J-1 when the vibrational level is v. Unit: s<sup>-1</sup>
-
 
 ## Example
 ### CaH, No optical pumping, Initial vibrational temperature: 300 K
@@ -125,6 +111,48 @@ sim_HD3.save_csv("./export/HD_T1000_PumpON02to21.csv")
 
 #### Result
 ![Result HD_T1000_PumpON02to21](https://github.com/harapekoaomushi/molecular-cooling/raw/master/export/HD_T1000_PumpON02to21.png)
+
+
+## Reference
+```
+molecular_data.CaH(T_init = 300)
+```
+### Parameters
+* `T_init` : *int, optional*
+
+Initial rotational temperature in Kelvin. Default is 300.
+
+### Class member
+* `AJ` : *ndarray*
+
+Einstein A coefficients for rotational transitions in ground electronic state. `AJ[v,J]` indicates the A coefficients from `J` to `J-1` when the vibrational level is `v`. Unit: s<sup>-1</sup>
+
+* `gJ` : *ndarray*
+
+Rotational transition rate by blackbody radiation in ground electronic state. `gJ[v,J]` insicates the translation rate from `J` to `J-1` or the rate from `J-1` to `J` when the vibrational level is `v`. Unit: s<sup>-1</sup>
+
+* `Av` : *ndarray*
+
+Einstein A-coefficient of vibrational Transitions in ground electronic state. `Av[v_init, v_fin]` indicates the A coefficients from `v_init` to `v_fin`. Unit: s<sup>-1</sup>
+
+* `Boltzmann_plot` : *ndarray*
+
+Rotatinal Boltzmann plot at `T_init` Kelvin. `Boltzmann_plot[J]` indicates the population of rotational level : `J` when the vibrational level is 0.
+
+cf. If you want to get a Boltzmann plot of CaH at 4 Kelvin, do the following.
+```
+from molecular_data import CaH
+mol_4K = CaH(T_init = 4)
+print(mol_4K.Boltzmann_plot)
+```
+Result:
+```
+[9.07922709e-001 9.19029020e-002 1.74379793e-004 9.37781084e-009
+ 1.56272408e-014 8.35272028e-022 1.45657602e-030 8.36748037e-041
+ 1.59303419e-052 1.00916366e-065 2.13313436e-080 1.50756748e-096
+ 3.56777971e-114 2.83067479e-133 7.53618401e-154 6.73754321e-176
+ 2.02394765e-199 2.04389197e-224 6.94153096e-251]
+```
 
 
 ## License

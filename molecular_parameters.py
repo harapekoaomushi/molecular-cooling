@@ -90,7 +90,7 @@ class molecular_const:
         """
         
         # Boltzmann plot
-        # Boltzmann_plot[v,J]
+        # Boltzmann_plot[J]
         Boltzmann_plot_unnormalize = np.exp( -( E0J - E0J[0] ) * (10**2) * sciconst.c * sciconst.h / ( sciconst.k * self.T_init )) * (2*np.arange(self.J0_num, dtype=np.float64)+1)
         self.Boltzmann_plot = Boltzmann_plot_unnormalize/Boltzmann_plot_unnormalize.sum()
 
