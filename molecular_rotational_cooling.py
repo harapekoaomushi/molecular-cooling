@@ -53,8 +53,6 @@ class molecular_rotational_cooling:
         #print(sum(dndt[0]+dndt[1]+dndt[2]))
         
         return dndt[0]+dndt[1]+dndt[2]
-    # ODEかける関数を再実装。[v,J]の順を徹底 余計な変数は作らない。dngdtなどは、dndt[v,J]に統一。returnで.flatten()にする（→ガタガタな配列なのでできない。）。varも同様。varはnに変更。returnはnumpy配列にしない！(list()噛ませる？)
-    # それに合わせて変数を再検討。V_num, rot_num（J_numに変える）をまず定めて、そこから話を進める
     
     def run(self, calc_func, vJ_pump_i=[0,1], vJ_pump_f=[2,0], GP=0, t_max=1500):
         # default: mid IR pumping v=0, J=1 → v=2, J=0
