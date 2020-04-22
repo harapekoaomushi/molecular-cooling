@@ -99,9 +99,10 @@ class HD(molecular_const):
         # Vibrational energy levels （v=0-2があればいい）
         # cited from H O Pilon et al., Phys. Rev. A 88, 032502 (2013)
         # http://dx.doi.org/10.1103/PhysRevA.88.032502
-        # Ev_eV[v] : [eV] (L=0)
+        # Ev_hartree[v] : [hartree] (L=0)
         # Ev[v] : [cm^-1] (L=0)
-        self.Ev_eV = np.array([-0.5978979686451, -0.589181829652, -0.58090370033, -0.5730505461]) #[eV]
+        self.Ev_hartree = np.array([-0.5978979686451, -0.589181829652, -0.58090370033, -0.5730505461]) #[hartree]
+        self.Ev_eV = self.Ev_hartree * sciconst.physical_constants["Hartree energy in eV"][0]
         self.Ev = self.Ev_eV * sciconst.e/(sciconst.c*sciconst.h*100) #[cm^-1]
         
         # Transition dipole moments (TDMs) （v=0-2があればいい）
