@@ -27,7 +27,7 @@ You can use `sim.draw_sum()` to check the sum of the populations for debug.
 
 
 ## Example
-### CaH, No optical pumping, Initial vibrational temperature: 300 K
+### CaH+, No optical pumping, Initial vibrational temperature: 300 K
 #### Code
 ```
 from molecular_data import CaH
@@ -46,7 +46,7 @@ sim_CaH0.save_csv("./export/CaH_T300_PumpOFF.csv")
 
 ---
 
-### CaH, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
+### CaH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
 #### Code
 ```
 from molecular_data import CaH
@@ -65,7 +65,7 @@ sim_CaH1.save_csv("./export/CaH_T300_PumpON01_20.csv")
 
 ---
 
-### HD, No optical pumping, Initial vibrational temperature: 1000 K
+### HD+, No optical pumping, Initial vibrational temperature: 1000 K
 #### Code
 ```
 from molecular_data import HD
@@ -84,7 +84,7 @@ sim_HD0.save_csv("./export/HD_T1000_PumpOFF.csv")
 
 ---
 
-### HD, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
+### HD+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
 #### Code
 ```
 from molecular_data import HD
@@ -103,7 +103,7 @@ sim_HD1.save_csv("./export/HD_T1000_PumpON01to20.csv")
 
 ---
 
-### HD, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 1000 K
+### HD+, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 1000 K
 #### Code
 ```
 from molecular_data import HD
@@ -120,6 +120,54 @@ sim_HD2.save_csv("./export/HD_T1000_PumpON02to21.csv")
 #### Result
 ![Result HD_T1000_PumpON02to21](./export/HD_T1000_PumpON02to21.png)
 
+
+---
+
+### SH+, No optical pumping, Initial vibrational temperature: 300 K
+#### Code
+```
+mol6 = SH(T_init = 300)
+sim_SH0 = molecular_rotational_cooling(mol6)
+sim_SH0.run(sim_SH0.population_ode, GP=0, t_max=10000)
+#sim_SH0.draw_sum()
+sim_SH0.save_fig("./export/SH_T300_PumpOFF.png", t_max=10000)
+sim_SH0.save_csv("./export/SH_T300_PumpOFF.csv")
+```
+
+#### Result
+![Result SH_T300_PumpOFF](./export/SH_T300_PumpOFF.png)
+
+---
+
+### SH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
+#### Code
+```
+mol7 = SH(T_init = 300)
+sim_SH1 = molecular_rotational_cooling(mol7)
+sim_SH1.run(sim_SH1.population_ode, vJ_pump_i=[0,1], vJ_pump_f=[2,0], GP=10*(10**3), t_max=10000)
+#sim_SH1.draw_sum()
+sim_SH1.save_fig("./export/SH_T300_PumpON01to20.png", t_max=10000)
+sim_SH1.save_csv("./export/SH_T300_PumpON01to20.csv")
+```
+
+#### Result
+![Result SH_T300_PumpON01to20](./export/SH_T300_PumpON01to20.png)
+
+---
+
+### SH+, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 300 K
+#### Code
+```
+mol8 = SH(T_init = 300)
+sim_SH2 = molecular_rotational_cooling(mol8)
+sim_SH2.run(sim_SH2.population_ode, vJ_pump_i=[0,2], vJ_pump_f=[2,1], GP=10*(10**3), t_max=10000)
+#sim_SH2.draw_sum()
+sim_SH2.save_fig("./export/SH_T300_PumpON02to21.png", t_max=10000)
+sim_SH2.save_csv("./export/SH_T300_PumpON02to21.csv")
+```
+
+#### Result
+![Result SH_T300_PumpON02to21](./export/SH_T300_PumpON02to21.png)
 
 ## API Reference
 ```
