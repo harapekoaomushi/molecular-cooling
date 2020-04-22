@@ -25,6 +25,8 @@ git clone https://github.com/harapekoaomushi/molecular-cooling.git
 
 You can use `sim.draw_sum()` to check the sum of the populations for debug.
 
+The wave length of the pumping laser can be got by running `10000/(mol.Ev[2]-mol.Ev[0])`
+
 
 ## Example
 ### CaH+, No optical pumping, Initial vibrational temperature: 300 K
@@ -47,6 +49,7 @@ sim_CaH0.save_csv("./export/CaH_T300_PumpOFF.csv")
 ---
 
 ### CaH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
+wave length of the pumping laser : 3.52 μm
 #### Code
 ```
 from molecular_data import CaH
@@ -85,6 +88,7 @@ sim_HD0.save_csv("./export/HD_T1000_PumpOFF.csv")
 ---
 
 ### HD+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
+wave length of the pumping laser : 2.68 μm
 #### Code
 ```
 from molecular_data import HD
@@ -104,6 +108,7 @@ sim_HD1.save_csv("./export/HD_T1000_PumpON01to20.csv")
 ---
 
 ### HD+, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 1000 K
+wave length of the pumping laser : 2.68 μm
 #### Code
 ```
 from molecular_data import HD
@@ -143,6 +148,7 @@ sim_SH0.save_csv("./export/SH_T300_PumpOFF.csv")
 ---
 
 ### SH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
+wave length of the pumping laser : 2.09 μm
 #### Code
 ```
 from molecular_data import SH
@@ -162,6 +168,7 @@ sim_SH1.save_csv("./export/SH_T300_PumpON01to20.csv")
 ---
 
 ### SH+, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 300 K
+wave length of the pumping laser : 2.09 μm
 #### Code
 ```
 from molecular_data import SH
