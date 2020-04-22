@@ -88,11 +88,11 @@ class HD(molecular_const):
         self.J0_num = self.AJ.shape[1] # the number of considering rotational energy levels regarding v=1
         
         # rotational constants
-        # rotational constant of neutral HD
-        # http://www.lifesci.sussex.ac.uk/research/fluorine/p5qsp3l/sw_teaching/f1177_html/rotlab/node15.html
+        # rotational constant of HD+ based on these calculated levels Hunter, Yau, et al., 1974 using v=0 and 1 only.
+        # https://webbook.nist.gov/cgi/cbook.cgi?ID=C12181167&Units=SI&Mask=1000#Diatomic
         # B[v]: [cm^-1]
         # B_hz[v] : [s^-1]
-        self.B = np.array([45.644]*self.v_num) # [cm^-1]
+        self.B = np.array([22.45]*self.v_num) # [cm^-1]
         self.B_hz = self.B * sciconst.c * (10**2)
         
         
