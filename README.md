@@ -25,7 +25,7 @@ git clone https://github.com/harapekoaomushi/molecular-cooling.git
 
 You can use `sim.draw_sum()` to check the sum of the populations for debug.
 
-The wavelength of the pumping laser (v=0 → v=2) can be obtained by running `10000/(mol.Ev[2]-mol.Ev[0])`
+The wavelength (unit: μm) of the pumping laser (v=0 → v=2) can be obtained by running `10000/(mol.Ev[2]-mol.Ev[0])`
 
 
 ## Example
