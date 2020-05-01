@@ -204,7 +204,7 @@ sim_CH0.save_csv("./export/CH_T1000_PumpOFF.csv")
 ---
 
 ### CH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
-wavelength of the pumping laser : X.XX μm
+wavelength of the pumping laser : 1.86 μm
 #### Code
 ```
 from molecular_data import CH
@@ -224,7 +224,7 @@ sim_CH1.save_csv("./export/CH_T1000_PumpON01to20.csv")
 ---
 
 ### CH+, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 300 K
-wavelength of the pumping laser : X.XX μm
+wavelength of the pumping laser : 1.86 μm
 #### Code
 ```
 from molecular_data import CH

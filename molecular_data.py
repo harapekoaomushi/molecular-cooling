@@ -250,10 +250,10 @@ class CH(molecular_const):
         
         
         # Vibrational energy levels （v=0-2があればいい）
-        # cited from 
-        # https://doi.org/
+        # cited from R. Hakalla et al., Eur. Phys. J. D 38, (2006)
+        # https://doi.org/10.1140/epjd/e2006-00063-9
         # Ev[v] : [cm^-1] (L=0, J=0)
-        self.Ev = np.array([]) #[cm^-1]
+        self.Ev = np.array([1415.8744, 4155.5319, 6778.5816, 9286.3756, 11680.2660]) #[cm^-1]
         
         # Transition dipole moments (TDMs) （v=0-2があればいい）
         # TDM[v_init, v_fin] : [Debye] (L=0)
@@ -272,7 +272,7 @@ class CH(molecular_const):
         # E0J[J] : [cm^-1]
         # E1J[J] : [cm^-1]
         self.E0J = self.B[0]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)
-        # self.E1J = self.B[1]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)+(self.Ev[1] - self.Ev[0])
+        self.E1J = self.B[1]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)+(self.Ev[1] - self.Ev[0])
         
         # Einstein A-coefficient of vibrational Transitions in ground electronic state
         # cited from B Godard et al., Astron. Astrophys. 550, A8 (2013)
