@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from molecular_data import CaH, HD, SH
+from molecular_data import CaH, HD, SH, CH
 from molecular_rotational_cooling import molecular_rotational_cooling
 
 mol0 = CaH(T_init = 300)
@@ -65,3 +65,24 @@ sim_SH2.run(sim_SH2.population_ode, vJ_pump_i=[0,2], vJ_pump_f=[2,1], GP=10*(10*
 #sim_SH2.draw_sum()
 sim_SH2.save_fig("./export/SH_T300_PumpON02to21.png", t_max=10000)
 sim_SH2.save_csv("./export/SH_T300_PumpON02to21.csv")
+
+mol9 = CH(T_init = 1000)
+sim_CH0 = molecular_rotational_cooling(mol9)
+sim_CH0.run(sim_CH0.population_ode, GP=0, t_max=10000)
+#sim_CH0.draw_sum()
+sim_CH0.save_fig("./export/CH_T1000_PumpOFF.png", t_max=10000)
+sim_CH0.save_csv("./export/CH_T1000_PumpOFF.csv")
+
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.run(sim_CH1.population_ode, vJ_pump_i=[0,1], vJ_pump_f=[2,0], GP=10*(10**3), t_max=10000)
+#sim_CH1.draw_sum()
+sim_CH1.save_fig("./export/CH_T1000_PumpON01to20.png", t_max=10000)
+sim_CH1.save_csv("./export/CH_T1000_PumpON01to20.csv")
+
+mol11 = CH(T_init = 1000)
+sim_CH2 = molecular_rotational_cooling(mol11)
+sim_CH2.run(sim_CH2.population_ode, vJ_pump_i=[0,2], vJ_pump_f=[2,1], GP=10*(10**3), t_max=10000)
+#sim_CH2.draw_sum()
+sim_CH2.save_fig("./export/CH_T1000_PumpON02to21.png", t_max=10000)
+sim_CH2.save_csv("./export/CH_T1000_PumpON02to21.csv")

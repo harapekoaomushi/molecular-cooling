@@ -182,8 +182,66 @@ sim_SH2.save_fig("./export/SH_T300_PumpON02to21.png", t_max=10000)
 sim_SH2.save_csv("./export/SH_T300_PumpON02to21.csv")
 ```
 
+---
+
+### CH+, No optical pumping, Initial vibrational temperature: 1000 K
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol9 = CH(T_init = 1000)
+sim_CH0 = molecular_rotational_cooling(mol9)
+sim_CH0.run(sim_CH0.population_ode, GP=0, t_max=10000)
+#sim_CH0.draw_sum()
+sim_CH0.save_fig("./export/CH_T1000_PumpOFF.png", t_max=10000)
+sim_CH0.save_csv("./export/CH_T1000_PumpOFF.csv")
+```
+
 #### Result
-![Result SH_T300_PumpON02to21](./export/SH_T300_PumpON02to21.png)
+![Result CH_T1000_PumpOFF](./export/CH_T1000_PumpOFF.png)
+
+---
+
+### CH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
+wavelength of the pumping laser : X.XX μm
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.run(sim_CH1.population_ode, vJ_pump_i=[0,1], vJ_pump_f=[2,0], GP=10*(10**3), t_max=10000)
+#sim_CH1.draw_sum()
+sim_CH1.save_fig("./export/CH_T1000_PumpON01to20.png", t_max=10000)
+sim_CH1.save_csv("./export/CH_T1000_PumpON01to20.csv")
+```
+
+#### Result
+![Result CH_T1000_PumpON01to20](./export/CH_T1000_PumpON01to20.png)
+
+---
+
+### CH+, pumping ON (v=0,J=2 -> v=2,J=1), Initial vibrational temperature: 300 K
+wavelength of the pumping laser : X.XX μm
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+
+mol11 = CH(T_init = 1000)
+sim_CH2 = molecular_rotational_cooling(mol11)
+sim_CH2.run(sim_CH2.population_ode, vJ_pump_i=[0,2], vJ_pump_f=[2,1], GP=10*(10**3), t_max=10000)
+#sim_CH2.draw_sum()
+sim_CH2.save_fig("./export/CH_T1000_PumpON02to21.png", t_max=10000)
+sim_CH2.save_csv("./export/CH_T1000_PumpON02to21.csv")
+```
+
+#### Result
+![Result CH_T1000_PumpON02to21](./export/CH_T1000_PumpON02to21.png)
+
+---
 
 ## API Reference
 ```

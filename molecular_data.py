@@ -218,3 +218,86 @@ class SH(molecular_const):
         
         super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
         
+
+class CH(molecular_const):
+    def __init__(self, T_init = 300., T_BBR = 4.):
+        
+        
+        self.J0_num = 19 # the number of considering rotational energy levels regarding v=1
+        
+        
+        # rotational constants
+        # cited from R. Hakalla et al., Eur. Phys. J. D 38, (2006)
+        # https://doi.org/10.1140/epjd/e2006-00063-9
+        # X^1Σ^+ state
+        # B[v]: [cm^-1] (L=0, J=0)
+        # B_hz[v] : [s^-1] (L=0, J=0)
+        self.B = np.array([13.9307078, 13.4409694, 12.9561214, 12.4764654]) # [cm^-1]
+        self.B_hz = self.B * sciconst.c * (10**2)
+        
+        
+        self.v_num = self.B_hz.shape[0] # the number of considering vibrational energy levels
+        
+        # permanent dipole moments (PDMs)
+        # cited from M. Cheng et al., Phys. Rev. A 75, 012502 (2007)
+        # http://dx.doi.org/10.1103/PhysRevA.75.012502
+        # mu_au[v] : [a.u.]
+        # mu[v] : [Debye]
+        # mu_Cm[v] : [C*m]
+        self.mu_au = np.array([0.6623]*self.v_num) #[a.u.]
+        self.mu_Cm = self.mu_au * sciconst.physical_constants["Bohr radius"][0] * sciconst.e # [C*m]
+        self.mu = self.mu_Cm * sciconst.c*(10**-21) #[Debye]
+        
+        
+        # Vibrational energy levels （v=0-2があればいい）
+        # cited from 
+        # https://doi.org/
+        # Ev[v] : [cm^-1] (L=0, J=0)
+        self.Ev = np.array([]) #[cm^-1]
+        
+        # Transition dipole moments (TDMs) （v=0-2があればいい）
+        # TDM[v_init, v_fin] : [Debye] (L=0)
+        # TDM_Cm[v_init, v_fin] : [C*m] (L=0)
+        #self.TDM = np.empty([4,3])
+        #self.TDM[:,:] = np.nan
+        #self.TDM[1,0] =
+        #self.TDM[2,0] =
+        #self.TDM[2,1] =
+        #self.TDM[3,0] =
+        #self.TDM[3,1] =
+        #self.TDM[3,2] =
+        
+        #self.TDM_Cm = self.TDM/sciconst.c*(10**-21)
+        
+        # E0J[J] : [cm^-1]
+        # E1J[J] : [cm^-1]
+        self.E0J = self.B[0]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)
+        # self.E1J = self.B[1]*np.arange(self.J0_num, dtype=np.float64)*(np.arange(self.J0_num, dtype=np.float64)+1)+(self.Ev[1] - self.Ev[0])
+        
+        # Einstein A-coefficient of vibrational Transitions in ground electronic state
+        # cited from B Godard et al., Astron. Astrophys. 550, A8 (2013)
+        # http://dx.doi.org/10.1051/0004-6361/201220151
+        # Av[v_init, v_fin] : [s^-1]
+        self.Av = np.empty([5,4])
+        self.Av[:,:] = np.nan
+        self.Av[1,0] = 5.6751
+        self.Av[2,0] = 4.6023
+        self.Av[3,0] = 1.3972
+        self.Av[4,0] = 3.0814
+        self.Av[2,1] = 1.1568
+        self.Av[3,1] = 5.4871
+        self.Av[4,1] = 1.1272
+        self.Av[3,2] = 1.8541
+        self.Av[4,2] = 6.7870
+        self.Av[4,3] = 3.0926
+        #self.Av = np.array([[16*(sciconst.pi**3)*((sciconst.c*(self.Ev[i]-self.Ev[j])*100)**3) *(self.TDM_Cm[i,j]**2) / (3 * sciconst.h * sciconst.epsilon_0*(sciconst.c**3)) for j in range(self.TDM.shape[1])] for i in range(self.TDM.shape[0])])
+        
+        # self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
+        
+        
+        # Einstein A-coefficient of rotational Transitions for specific vibrational state in ground electronic state
+        # AJ[v,J] : [s^-1]
+        self.AJ = 16*(sciconst.pi**3)*(self.mu_Cm.reshape(self.mu_Cm.shape[0],1)**2)*((2* (np.arange(-1, self.J0_num-1, dtype=np.float64)+1) * self.B_hz.reshape(self.B_hz.shape[0],1))**3) / (3*sciconst.epsilon_0*sciconst.h*(sciconst.c**3)*3)
+        
+        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
+        
