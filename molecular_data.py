@@ -33,7 +33,7 @@ class CaH(molecular_const):
         # http://dx.doi.org/10.1088/0953-4075/43/24/245102
         # TDM[v_init, v_fin] : [Debye] (L=0)
         # TDM_Cm[v_init, v_fin] : [C*m] (L=0)
-        self.TDM = np.empty([5,4])
+        self.TDM = np.empty([5,5])
         self.TDM[:,:] = np.nan
         self.TDM[1,0] = 0.13
         self.TDM[2,0] = 0.05
@@ -65,7 +65,7 @@ class CaH(molecular_const):
         
         #self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
         
-        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
+        super().__init__(self.B_hz, self.AJ, self.E0J, self.Av, T_init, T_BBR)
 
 
 
@@ -128,7 +128,7 @@ class HD(molecular_const):
         # cited from H O Pilon et al., Phys. Rev. A 88, 032502 (2013)
         # http://dx.doi.org/10.1103/PhysRevA.88.032502
         # Av[v_init, v_fin] : [s^-1]
-        self.Av = np.empty([4,3])
+        self.Av = np.empty([4,4])
         self.Av[:,:] = np.nan
         self.Av[1,0] = 18.3121
         self.Av[2,0] = 2.01840
@@ -140,7 +140,7 @@ class HD(molecular_const):
         
         # self.Av = self.Av / 10 #considering J=0~9, multiplied by 1/10
         
-        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
+        super().__init__(self.B_hz, self.AJ, self.E0J, self.Av, T_init, T_BBR)
         
 
 class SH(molecular_const):
@@ -199,7 +199,7 @@ class SH(molecular_const):
         # cited from J Senekowitsch et al., J. Chem. Phys. 83, 4661 (1985)
         # https://doi.org/10.1063/1.449037
         # Av[v_init, v_fin] : [s^-1]
-        self.Av = np.empty([4,3])
+        self.Av = np.empty([4,4])
         self.Av[:,:] = np.nan
         self.Av[1,0] = 52
         self.Av[2,0] = 1.2
@@ -216,7 +216,7 @@ class SH(molecular_const):
         # AJ[v,J] : [s^-1]
         self.AJ = 16*(sciconst.pi**3)*(self.mu_Cm.reshape(self.mu_Cm.shape[0],1)**2)*((2* (np.arange(-1, self.J0_num-1, dtype=np.float64)+1) * self.B_hz.reshape(self.B_hz.shape[0],1))**3) / (3*sciconst.epsilon_0*sciconst.h*(sciconst.c**3)*3)
         
-        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
+        super().__init__(self.B_hz, self.AJ, self.E0J, self.Av, T_init, T_BBR)
         
 
 class CH(molecular_const):
@@ -278,7 +278,7 @@ class CH(molecular_const):
         # cited from B Godard et al., Astron. Astrophys. 550, A8 (2013)
         # http://dx.doi.org/10.1051/0004-6361/201220151
         # Av[v_init, v_fin] : [s^-1]
-        self.Av = np.empty([5,4])
+        self.Av = np.empty([5,5])
         self.Av[:,:] = np.nan
         self.Av[1,0] = 5.6751
         self.Av[2,0] = 4.6023
@@ -299,5 +299,5 @@ class CH(molecular_const):
         # AJ[v,J] : [s^-1]
         self.AJ = 16*(sciconst.pi**3)*(self.mu_Cm.reshape(self.mu_Cm.shape[0],1)**2)*((2* (np.arange(-1, self.J0_num-1, dtype=np.float64)+1) * self.B_hz.reshape(self.B_hz.shape[0],1))**3) / (3*sciconst.epsilon_0*sciconst.h*(sciconst.c**3)*3)
         
-        super().__init__(self.B_hz, self.AJ, self.E0J, T_init, T_BBR)
+        super().__init__(self.B_hz, self.AJ, self.E0J, self.Av, T_init, T_BBR)
         

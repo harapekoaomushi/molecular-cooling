@@ -2,7 +2,7 @@ import numpy as np
 from scipy import constants as sciconst
 
 class molecular_const:
-    def __init__(self, B_hz, AJ, E0J, T_init = 300., T_BBR = 4.):
+    def __init__(self, B_hz, AJ, E0J, Av, T_init = 300., T_BBR = 4.):
         self.T_init = T_init
         self.v_num = AJ.shape[0]
         self.J0_num = AJ.shape[1]
@@ -10,6 +10,21 @@ class molecular_const:
         # Stimulated emission/absorption of rotational Transitions for specific vibrational state in ground electronic state
         # gJ[v,J]
         self.gJ = 3* self.AJ / (np.exp(2 * (np.concatenate([[np.inf],np.arange(1,self.J0_num, dtype=np.float64)])+0)*sciconst.h*B_hz.reshape(B_hz.shape[0],1) / (sciconst.k * T_BBR) ) -1)
+        
+        # vibrational A-coefficient (down level to up level)
+        # degree of degeneracy of each level : 1
+        self.Av[~np.isnan(Av).T] = 0
+        self.Av += self.Av.T
+        
+        # Einstein B-coefficient of rotational Transitions for specific vibrational state in ground electronic state
+        # BJ(wave_length)[v,J] : [s^-1]
+        # wave_length : [nm]
+        self.BJ = lambda wave_length: AJ * ((wave_length * 1e-9) ** 5) / (8 * sciconst.pi * sciconst.h * sciconst.c )
+        
+        # Einstein B-coefficient of vibrational Transitions in ground electronic state
+        # Bv(wave_length)[v_init, v_fin] : [s^-1]
+        # wave_length : [nm]
+        self.Bv = lambda wave_length: Av * ((wave_length * 1e-9) ** 5) / (8 * sciconst.pi * sciconst.h * sciconst.c)
         
         """
         # g0, g1, g2
