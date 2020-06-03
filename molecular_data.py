@@ -4,6 +4,7 @@ from molecular_parameters import molecular_const
 
 class CaH(molecular_const):
     def __init__(self, T_init = 300., T_BBR = 4.):
+        self.weight = 39.962590866 + 1.00782503224 #[u]
         # permanent dipole moments (PDMs)
         # cited from M Abe et al., J. Phys. B 43, 245102 (2010)
         # http://dx.doi.org/10.1088/0953-4075/43/24/245102
@@ -71,7 +72,7 @@ class CaH(molecular_const):
 
 class HD(molecular_const):
     def __init__(self, T_init = 300., T_BBR = 4.):
-        
+        self.weight = 1.00782503224 + 2.01410177811 #[u]
         
         # Radiative lifetime tau[J,v]
         # cited from Z Amitay et al., Phys. Rev. A 50, 2304 (1994)
@@ -145,7 +146,7 @@ class HD(molecular_const):
 
 class SH(molecular_const):
     def __init__(self, T_init = 300., T_BBR = 4.):
-        
+        self.weight = 31.9720711744 + 1.00782503224 #[u]
         
         self.J0_num = 19 # the number of considering rotational energy levels regarding v=1
         
@@ -221,7 +222,7 @@ class SH(molecular_const):
 
 class CH(molecular_const):
     def __init__(self, T_init = 300., T_BBR = 4.):
-        
+        self.weight = 12 + 1.00782503224 #[u]
         
         self.J0_num = 19 # the number of considering rotational energy levels regarding v=1
         
