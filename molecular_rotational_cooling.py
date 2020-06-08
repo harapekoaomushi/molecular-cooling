@@ -108,6 +108,7 @@ class molecular_rotational_cooling:
 
     @staticmethod
     def population_ode_Bcoef(t, var, AJ, gJ, Av, vJ_pump_i, vJ_pump_f, Bv, laser_PSD):
+        # laser_PSD # [J/m^3/nm]
         # vJ_pump_i[v,J]
         # vJ_pump_f[v,J]
         J_num = [AJ.shape[1],4,4]
@@ -188,25 +189,33 @@ class molecular_rotational_cooling:
     
     
     # laser power vs. population of (0,0) (noPWM)
-    def run_laser_power(self, vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_PSD = 5):
-        # pumping_laser_PSD : [mW/nm]
+    def run_laser_power(self, vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = 5):
+        # pumping_laser_Power : [mW/mm^2]
         pumping_wave_length = 10000000/(self.Ev[vJ_pump_f[0]]-self.Ev[vJ_pump_i[0]]) #[nm]
-        pumping_laser_PSD_Wm = pumping_laser_PSD * 1e-3 * 1e9 #[W/m]
-        pumping_laser_PSD_Wm_average = pumping_laser_PSD_Wm * (0.7/2.965)
+        
+        laser_Power_spectrum_FWHM_MHz = 30 # [MHz]
+        
+        laser_Power_spectrum_FWHM = ((laser_Power_spectrum_FWHM_MHz * 1e6 * ((pumping_wave_length * 1e-9) ** 2)) / sciconst.c) * 1e9 # [nm]
+        pumping_laser_Power_per_volume = (pumping_laser_Power / sciconst.c) * 1e6 * 1e-3 # [J/m^3]
+        pumping_laser_PSD_Wm3nm = pumping_laser_Power_per_volume / laser_Power_spectrum_FWHM  #[J/m^3/nm]
+        pumping_laser_PSD_Wm3nm_average = pumping_laser_PSD_Wm3nm * (0.7/2.965) # [J/m^3/nm]
+        
         
         J_num = [self.AJ.shape[1],4,4]
         var_init = list(self.Boltzmann_plot[:J_num[0]]) + [0] * (J_num[1] + J_num[2])
-        sol = solve_ivp(fun=self.population_ode_Bcoef, t_span=[0,t_max], y0=var_init, args=(self.AJ, self.gJ, self.Av, vJ_pump_i, vJ_pump_f, self.Bv(pumping_wave_length), pumping_laser_PSD_Wm_average), t_eval=np.linspace(0,t_max,10**4), method="LSODA")
+        sol = solve_ivp(fun=self.population_ode_Bcoef, t_span=[0,t_max], y0=var_init, args=(self.AJ, self.gJ, self.Av, vJ_pump_i, vJ_pump_f, self.Bv(pumping_wave_length), pumping_laser_PSD_Wm3nm_average), t_eval=np.linspace(0,t_max,10**4), method="LSODA")
         print(sol.message)
         
         self.result_t = sol.t
         self.result_y = sol.y.T
     
     def run_laserPower_vs_groundTime(self,threshold=0.99):
-        laserPower = np.linspace(0,0.01,50)
+        #laserPower = np.linspace(0,0.1,50)
+        #laserPower = np.logspace(4,6,100)
+        laserPower = np.logspace(-1,4,100)
         groundTime = []
         for Power in laserPower:
-            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_PSD = Power)
+            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
             if self.result_y[-1,0] < threshold:
                 print("NaN")
                 print(self.result_y[-1,0])
@@ -222,16 +231,16 @@ class molecular_rotational_cooling:
         result_withoutNaN = result[:,~np.isnan(result[1])]
         #plt.ylim([0,1])
         #plt.xlim([0.01,t_max])
-        #plt.xscale("log")
-        plt.xlabel('power spectral density of pumping laser [mW/nm]')
-        plt.ylabel('time for {}% of ion to be in the ground state [s]'.format(threshold))
+        plt.xscale("log")
+        plt.xlabel('power density of pumping laser [mW/mm]')
+        plt.ylabel('time for {}% of ion to be in the ground state [s]'.format(threshold*100))
         plt.plot(result_withoutNaN[0],result_withoutNaN[1])
         plt.show()
         plt.close('all')
         
-        #plt.xscale("log")
-        plt.xlabel('power spectral density of pumping laser [mW/nm]')
-        plt.ylabel('time for {}% of ion to be in the ground state [s]'.format(threshold))
+        plt.xscale("log")
+        plt.xlabel('power density of pumping laser [mW/mm]')
+        plt.ylabel('time for {}% of ion to be in the ground state [s]'.format(threshold*100))
         plt.plot(result_withoutNaN[0],result_withoutNaN[1])
         plt.savefig(file_name)
         plt.close('all')

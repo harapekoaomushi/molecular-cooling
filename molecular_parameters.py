@@ -17,12 +17,12 @@ class molecular_const:
         self.Av += self.Av.T
         
         # Einstein B-coefficient of rotational Transitions for specific vibrational state in ground electronic state
-        # BJ(wave_length)[v,J] : [s^-1]
+        # BJ(wave_length)[v,J] : [s^-1 / (J/m^3/nm)]
         # wave_length : [nm]
         self.BJ = lambda wave_length: AJ * ((wave_length * 1e-9) ** 5) / (8 * sciconst.pi * sciconst.h * sciconst.c )
         
         # Einstein B-coefficient of vibrational Transitions in ground electronic state
-        # Bv(wave_length)[v_init, v_fin] : [s^-1]
+        # Bv(wave_length)[v_init, v_fin] : [s^-1 / (J/m^3/nm)]
         # wave_length : [nm]
         self.Bv = lambda wave_length: Av * ((wave_length * 1e-9) ** 5) / (8 * sciconst.pi * sciconst.h * sciconst.c)
         
