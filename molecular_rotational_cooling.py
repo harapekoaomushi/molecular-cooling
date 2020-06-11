@@ -226,6 +226,25 @@ class molecular_rotational_cooling:
                 groundTime.append(self.result_t[self.result_y[:,0] >= threshold][0])
         return np.array([laserPower, groundTime])
     
+    
+    def run_laserPower_vs_v_J_Time(self,threshold=0.99,v=2,J=0):
+        #laserPower = np.linspace(0,0.1,50)
+        #laserPower = np.logspace(4,6,100)
+        laserPower = np.logspace(-1,4,100)
+        J_num = [self.AJ.shape[1],4,4]
+        v_J_Time = []
+        for Power in laserPower:
+            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
+            if self.result_y[-1,sum(J_num[:v])+J] < threshold:
+                print("NaN")
+                print(self.result_y[-1,sum(J_num[:v])+J])
+                v_J_Time.append(np.nan)
+            else:
+                print("OK")
+                print(self.result_t[self.result_y[:,sum(J_num[:v])+J] >= threshold][0])
+                v_J_Time.append(self.result_t[self.result_y[:,sum(J_num[:v])+J] >= threshold][0])
+        return np.array([laserPower, v_J_Time])
+    
     def draw_laserPower_vs_groundTime(self,threshold,file_name):
         result = self.run_laserPower_vs_groundTime(threshold)
         result_withoutNaN = result[:,~np.isnan(result[1])]
@@ -267,6 +286,38 @@ class molecular_rotational_cooling:
         plt.ylabel('population')
         plt.plot(self.result_t, self.result_y)
         plt.show()
+        plt.close('all')
+    
+    def draw_v_J_eachlaserPower(self, v, J, t_max=1500):
+        laserPower = np.logspace(0,4,10)
+        J_num = [self.AJ.shape[1],4,4]
+        for Power in laserPower:
+            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
+            plt.plot(self.result_t, self.result_y[:, sum(J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
+        #plt.ylim([0,1])
+        plt.xlim([0.01,t_max])
+        plt.xscale("log")
+        plt.legend(loc = 'best')
+        plt.xlabel('time [t]')
+        plt.ylabel('population of (v,J)=({0},{1})'.format(v,J))
+        plt.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
+        plt.show()
+        plt.close('all')
+    
+    def save_fig_v_J_eachlaserPower(self,file_name, v, J, t_max=1500):
+        laserPower = np.logspace(0,4,10)
+        J_num = [self.AJ.shape[1],4,4]
+        for Power in laserPower:
+            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
+            plt.plot(self.result_t, self.result_y[:, sum(J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
+        #plt.ylim([0,1])
+        plt.xlim([0.01,t_max])
+        plt.xscale("log")
+        plt.legend(loc = 'best')
+        plt.xlabel('time [t]')
+        plt.ylabel('population of (v,J)=({0},{1})'.format(v,J))
+        plt.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
+        plt.savefig(file_name)
         plt.close('all')
     
     def save_fig(self, file_name, t_max=1500):
