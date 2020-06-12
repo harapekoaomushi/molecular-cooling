@@ -244,6 +244,7 @@ sim_CH2.save_csv("./export/CH_T1000_PumpON02to21.csv")
 ---
 
 ## example of plots dependent on laser power
+More example is [here](./laserpowerDependence.md).
 ### time vs population of (v,J)=(2,0) for each laser power
 CaH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
 wavelength of the pumping laser : 3.52 μm
