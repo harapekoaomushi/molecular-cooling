@@ -14,12 +14,12 @@ class molecular_rotational_cooling:
         self.Bv = mol.Bv
         self.Ev = mol.Ev
         self.weight = mol.weight
+        self.J_num = [self.AJ.shape[1],4,4]
     
     @staticmethod
-    def population_ode(t, var, AJ, gJ, Av, vJ_pump_i, vJ_pump_f, GP):
+    def population_ode(t, var, AJ, gJ, Av, J_num, vJ_pump_i, vJ_pump_f, GP):
         # vJ_pump_i[v,J]
         # vJ_pump_f[v,J]
-        J_num = [AJ.shape[1],4,4]
         
         # n[v][J]
         n = [[]]
@@ -59,10 +59,9 @@ class molecular_rotational_cooling:
         return dndt[0]+dndt[1]+dndt[2]
     
     @staticmethod
-    def population_ode_Bcoef_PWM(t, var, AJ, gJ, Av, vJ_pump_i, vJ_pump_f, Bv, laser_PSD, ring_period, ring_merged_section_flight_time):
+    def population_ode_Bcoef_PWM(t, var, AJ, gJ, Av, J_num, vJ_pump_i, vJ_pump_f, Bv, laser_PSD, ring_period, ring_merged_section_flight_time):
         # vJ_pump_i[v,J]
         # vJ_pump_f[v,J]
-        J_num = [AJ.shape[1],4,4]
         
         # n[v][J]
         n = [[]]
@@ -107,11 +106,10 @@ class molecular_rotational_cooling:
     
 
     @staticmethod
-    def population_ode_Bcoef(t, var, AJ, gJ, Av, vJ_pump_i, vJ_pump_f, Bv, laser_PSD):
+    def population_ode_Bcoef(t, var, AJ, gJ, Av, J_num, vJ_pump_i, vJ_pump_f, Bv, laser_PSD):
         # laser_PSD # [J/m^3/nm]
         # vJ_pump_i[v,J]
         # vJ_pump_f[v,J]
-        J_num = [AJ.shape[1],4,4]
         
         # n[v][J]
         n = [[]]
@@ -155,15 +153,14 @@ class molecular_rotational_cooling:
         # vJ_pump_i = [0,1] : [v,J]
         # vJ_pump_f = [2,0] : [v,J]
         # GP=0
-        J_num = [self.AJ.shape[1],4,4]
-        var_init = list(self.Boltzmann_plot[:J_num[0]]) + [0] * (J_num[1] + J_num[2])
+        var_init = list(self.Boltzmann_plot[:self.J_num[0]]) + [0] * (self.J_num[1] + self.J_num[2])
         
         # for dense output
         # sol = solve_ivp(ng, [0,t_max], var_init, dense_output=True)
         # var_list = sol.sol(t_list).T
         # plt.plot(t_list, var_list)
         #sol = solve_ivp(fun=self.ng01_20, t_span=[0,t_max], y0=var_init, args=(self.AJ0, self.AJ1, self.AJ2, self.Av, self.g0, self.g1, self.g2), method="LSODA")
-        sol = solve_ivp(fun=calc_func, t_span=[0,t_max], y0=var_init, args=(self.AJ, self.gJ, self.Av, vJ_pump_i, vJ_pump_f, GP), t_eval=np.linspace(0,t_max,10**4), method="LSODA")
+        sol = solve_ivp(fun=calc_func, t_span=[0,t_max], y0=var_init, args=(self.AJ, self.gJ, self.Av, self.J_num, vJ_pump_i, vJ_pump_f, GP), t_eval=np.linspace(0,t_max,10**4), method="LSODA")
         print(sol.message)
         
         self.result_t = sol.t
@@ -179,9 +176,8 @@ class molecular_rotational_cooling:
         ring_period_RICE = 2.965 / speed_of_ion #[s]
         ring_merged_section_flight_time_RICE = 0.7 / speed_of_ion #[s]
         
-        J_num = [self.AJ.shape[1],4,4]
-        var_init = list(self.Boltzmann_plot[:J_num[0]]) + [0] * (J_num[1] + J_num[2])
-        sol = solve_ivp(fun=self.population_ode_Bcoef_PWM, t_span=[0,t_max], y0=var_init, args=(self.AJ, self.gJ, self.Av, vJ_pump_i, vJ_pump_f, self.Bv(pumping_wave_length), pumping_laser_PSD_Wm, ring_period_RICE, ring_merged_section_flight_time_RICE), t_eval=np.linspace(0,t_max,10**4), method="LSODA")
+        var_init = list(self.Boltzmann_plot[:self.J_num[0]]) + [0] * (self.J_num[1] + self.J_num[2])
+        sol = solve_ivp(fun=self.population_ode_Bcoef_PWM, t_span=[0,t_max], y0=var_init, args=(self.AJ, self.gJ, self.Av, self.J_num, vJ_pump_i, vJ_pump_f, self.Bv(pumping_wave_length), pumping_laser_PSD_Wm, ring_period_RICE, ring_merged_section_flight_time_RICE), t_eval=np.linspace(0,t_max,10**4), method="LSODA")
         print(sol.message)
         
         self.result_t = sol.t
@@ -201,9 +197,8 @@ class molecular_rotational_cooling:
         pumping_laser_PSD_Wm3nm_average = pumping_laser_PSD_Wm3nm * (0.7/2.965) # [J/m^3/nm]
         
         
-        J_num = [self.AJ.shape[1],4,4]
-        var_init = list(self.Boltzmann_plot[:J_num[0]]) + [0] * (J_num[1] + J_num[2])
-        sol = solve_ivp(fun=self.population_ode_Bcoef, t_span=[0,t_max+1], y0=var_init, args=(self.AJ, self.gJ, self.Av, vJ_pump_i, vJ_pump_f, self.Bv(pumping_wave_length), pumping_laser_PSD_Wm3nm_average), t_eval=np.logspace(-2,np.log10(t_max),10**4), method="LSODA")
+        var_init = list(self.Boltzmann_plot[:self.J_num[0]]) + [0] * (self.J_num[1] + self.J_num[2])
+        sol = solve_ivp(fun=self.population_ode_Bcoef, t_span=[0,t_max+1], y0=var_init, args=(self.AJ, self.gJ, self.Av, self.J_num, vJ_pump_i, vJ_pump_f, self.Bv(pumping_wave_length), pumping_laser_PSD_Wm3nm_average), t_eval=np.logspace(-2,np.log10(t_max),10**4), method="LSODA")
         print(sol.message)
         
         self.result_t = sol.t
@@ -231,18 +226,17 @@ class molecular_rotational_cooling:
         #laserPower = np.linspace(0,0.1,50)
         #laserPower = np.logspace(4,6,100)
         laserPower = np.logspace(-1,4,100)
-        J_num = [self.AJ.shape[1],4,4]
         v_J_Time = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
-            if self.result_y[-1,sum(J_num[:v])+J] < threshold:
+            if self.result_y[-1,sum(self.J_num[:v])+J] < threshold:
                 print("NaN")
-                print(self.result_y[-1,sum(J_num[:v])+J])
+                print(self.result_y[-1,sum(self.J_num[:v])+J])
                 v_J_Time.append(np.nan)
             else:
                 print("OK")
-                print(self.result_t[self.result_y[:,sum(J_num[:v])+J] >= threshold][0])
-                v_J_Time.append(self.result_t[self.result_y[:,sum(J_num[:v])+J] >= threshold][0])
+                print(self.result_t[self.result_y[:,sum(self.J_num[:v])+J] >= threshold][0])
+                v_J_Time.append(self.result_t[self.result_y[:,sum(self.J_num[:v])+J] >= threshold][0])
         return np.array([laserPower, v_J_Time])
     
     def draw_laserPower_vs_groundTime(self,threshold,file_name):
@@ -305,10 +299,9 @@ class molecular_rotational_cooling:
     
     def draw_v_J_eachlaserPower(self, v, J, t_max=1500):
         laserPower = np.logspace(2,8,10)
-        J_num = [self.AJ.shape[1],4,4]
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
-            plt.plot(self.result_t, self.result_y[:, sum(J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
+            plt.plot(self.result_t, self.result_y[:, sum(self.J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
         #plt.ylim([0,1])
         plt.xlim([0.01,t_max])
         plt.xscale("log")
@@ -321,10 +314,9 @@ class molecular_rotational_cooling:
     
     def save_fig_v_J_eachlaserPower(self,file_name, v, J, t_max=1500):
         laserPower = np.logspace(2,8,14)
-        J_num = [self.AJ.shape[1],4,4]
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
-            plt.plot(self.result_t, self.result_y[:, sum(J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
+            plt.plot(self.result_t, self.result_y[:, sum(self.J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
         #plt.ylim([0,1])
         plt.xlim([0.01,t_max])
         plt.xscale("log")
@@ -336,12 +328,11 @@ class molecular_rotational_cooling:
         plt.close('all')
     
     def draw_laserPower_vs_v_J_peakTime(self, v, J, t_max=1500):
-        laserPower = np.logspace(-2,3,20)
-        J_num = [self.AJ.shape[1],4,4]
+        laserPower = np.logspace(-2,8,50)
         v_J_peakTime = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
-            v_J_peakTime.append(self.result_t[self.result_y[:, sum(J_num[:v])+J].argmax()])
+            v_J_peakTime.append(self.result_t[self.result_y[:, sum(self.J_num[:v])+J].argmax()])
         plt.plot(laserPower, v_J_peakTime)
         #plt.ylim([0,1])
         #plt.xlim([0.01,t_max])
@@ -349,19 +340,18 @@ class molecular_rotational_cooling:
         plt.xscale("log")
         #plt.legend(loc = 'best')
         plt.xlabel('power density of pumping laser [mW/$\mathrm{mm}^{2}$]')
-        plt.ylabel('peak time of the population of (v,J)=({0},{1}) [s]'.format(v,J))
+        plt.ylabel('the peak time of the population of (v,J)=({0},{1}) [s]'.format(v,J))
         #plt.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
         plt.tight_layout()
         plt.show()
         plt.close('all')
     
     def draw_laserPower_vs_v_J_peakHeight(self, v, J, t_max=1500):
-        laserPower = np.logspace(-2,3,20)
-        J_num = [self.AJ.shape[1],4,4]
+        laserPower = np.logspace(-2,8,50)
         v_J_peakHeight = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
-            v_J_peakHeight.append(self.result_y[:, sum(J_num[:v])+J].max())
+            v_J_peakHeight.append(self.result_y[:, sum(self.J_num[:v])+J].max())
         plt.plot(laserPower, v_J_peakHeight)
         #plt.ylim([0,1])
         #plt.xlim([0.01,t_max])
@@ -369,7 +359,26 @@ class molecular_rotational_cooling:
         plt.xscale("log")
         #plt.legend(loc = 'best')
         plt.xlabel('power density of pumping laser [mW/$\mathrm{mm}^{2}$]')
-        plt.ylabel('peak population of the population of (v,J)=({0},{1})'.format(v,J))
+        plt.ylabel('the peak population of (v,J)=({0},{1})'.format(v,J))
+        #plt.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
+        plt.tight_layout()
+        plt.show()
+        plt.close('all')
+    
+    def draw_laserPower_vs_v_J_1secHeight(self, v, J, t_max=1500):
+        laserPower = np.logspace(-2,8,50)
+        v_J_1secHeight = []
+        for Power in laserPower:
+            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1, pumping_laser_Power = Power)
+            v_J_1secHeight.append(self.result_y[-1, sum(self.J_num[:v])+J])
+        plt.plot(laserPower, v_J_1secHeight)
+        #plt.ylim([0,1])
+        #plt.xlim([0.01,t_max])
+        plt.yscale("log")
+        plt.xscale("log")
+        #plt.legend(loc = 'best')
+        plt.xlabel('power density of pumping laser [mW/$\mathrm{mm}^{2}$]')
+        plt.ylabel('the population of (v,J)=({0},{1}) in 1 seconds'.format(v,J))
         #plt.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
         plt.tight_layout()
         plt.show()
