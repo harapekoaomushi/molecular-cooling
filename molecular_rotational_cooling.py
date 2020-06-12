@@ -312,21 +312,6 @@ class molecular_rotational_cooling:
         plt.show()
         plt.close('all')
     
-    def save_fig_v_J_eachlaserPower(self,file_name, v, J, t_max=1500):
-        laserPower = np.logspace(2,8,14)
-        for Power in laserPower:
-            self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
-            plt.plot(self.result_t, self.result_y[:, sum(self.J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
-        #plt.ylim([0,1])
-        plt.xlim([0.01,t_max])
-        plt.xscale("log")
-        plt.legend(loc = 'best')
-        plt.xlabel('time [t]')
-        plt.ylabel('population of (v,J)=({0},{1})'.format(v,J))
-        plt.ticklabel_format(style="sci",  axis="y",scilimits=(0,0))
-        plt.savefig(file_name)
-        plt.close('all')
-    
     def draw_laserPower_vs_v_J_peakTime(self, v, J, t_max=1500):
         laserPower = np.logspace(-2,8,50)
         v_J_peakTime = []
