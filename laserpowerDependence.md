@@ -70,13 +70,13 @@ wavelength of the pumping laser : 2.68 μm
 ```
 from molecular_data import HD
 from molecular_rotational_cooling import molecular_rotational_cooling
-mol3 = HD(T_init = 300)
+mol3 = HD(T_init = 1000)
 sim_HD1 = molecular_rotational_cooling(mol3)
 sim_HD1.draw_v_J_eachlaserPower(2,0)
 ```
 
 #### Result
-![HD_T300_PumpON01_20_2_0](./export/HD_T300_PumpON01_20_2_0.png)
+![HD_T1000_PumpON01_20_2_0](./export/HD_T1000_PumpON01_20_2_0.png)
 
 ---
 
@@ -85,13 +85,13 @@ sim_HD1.draw_v_J_eachlaserPower(2,0)
 ```
 from molecular_data import HD
 from molecular_rotational_cooling import molecular_rotational_cooling
-mol3 = HD(T_init = 300)
+mol3 = HD(T_init = 1000)
 sim_HD1 = molecular_rotational_cooling(mol3)
 sim_HD1.draw_laserPower_vs_v_J_peakTime(2,0)
 ```
 
 #### Result
-![HD_T300_PumpON01_20_2_0_peakTime_minus2to8](./export/HD_T300_PumpON01_20_2_0_peakTime_minus2to8.png)
+![HD_T1000_PumpON01_20_2_0_peakTime_minus2to8](./export/HD_T1000_PumpON01_20_2_0_peakTime_minus2to8.png)
 
 ---
 
@@ -100,13 +100,13 @@ sim_HD1.draw_laserPower_vs_v_J_peakTime(2,0)
 ```
 from molecular_data import HD
 from molecular_rotational_cooling import molecular_rotational_cooling
-mol3 = HD(T_init = 300)
+mol3 = HD(T_init = 1000)
 sim_HD1 = molecular_rotational_cooling(mol3)
 sim_HD1.draw_laserPower_vs_v_J_peakHeight(2,0)
 ```
 
 #### Result
-![HD_T300_PumpON01_20_2_0_peakHeight_minus2to8](./export/HD_T300_PumpON01_20_2_0_peakHeight_minus2to8.png)
+![HD_T1000_PumpON01_20_2_0_peakHeight_minus2to8](./export/HD_T1000_PumpON01_20_2_0_peakHeight_minus2to8.png)
 
 ---
 
@@ -115,13 +115,13 @@ sim_HD1.draw_laserPower_vs_v_J_peakHeight(2,0)
 ```
 from molecular_data import HD
 from molecular_rotational_cooling import molecular_rotational_cooling
-mol3 = HD(T_init = 300)
+mol3 = HD(T_init = 1000)
 sim_HD1 = molecular_rotational_cooling(mol3)
 sim_HD1.draw_laserPower_vs_v_J_1secHeight(2,0)
 ```
 
 #### Result
-![HD_T300_PumpON01_20_2_0_1secHeight_minus2to8](./export/HD_T300_PumpON01_20_2_0_1secHeight_minus2to8.png)
+![HD_T1000_PumpON01_20_2_0_1secHeight_minus2to8](./export/HD_T1000_PumpON01_20_2_0_1secHeight_minus2to8.png)
 
 ---
 
