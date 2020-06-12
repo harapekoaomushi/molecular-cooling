@@ -187,3 +187,66 @@ sim_SH1.draw_laserPower_vs_v_J_1secHeight(2,0)
 
 ---
 
+
+## CH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
+wavelength of the pumping laser : 1.86 μm
+### time vs population of (v,J)=(2,0) for each laser power
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.draw_v_J_eachlaserPower(2,0)
+```
+
+#### Result
+![CH_T1000_PumpON01_20_2_0](./export/CH_T1000_PumpON01_20_2_0.png)
+
+---
+
+### laser power vs peak time of (v,J)=(2,0)
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.draw_laserPower_vs_v_J_peakTime(2,0)
+```
+
+#### Result
+![CH_T1000_PumpON01_20_2_0_peakTime_minus2to8](./export/CH_T1000_PumpON01_20_2_0_peakTime_minus2to8.png)
+
+---
+
+### laser power vs peak population of (v,J)=(2,0)
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.draw_laserPower_vs_v_J_peakHeight(2,0)
+```
+
+#### Result
+![CH_T1000_PumpON01_20_2_0_peakHeight_minus2to8](./export/CH_T1000_PumpON01_20_2_0_peakHeight_minus2to8.png)
+
+---
+
+### laser power vs the population of (v,J)=(2,0) in 1 seconds
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.draw_laserPower_vs_v_J_1secHeight(2,0)
+```
+
+#### Result
+![CH_T1000_PumpON01_20_2_0_1secHeight_minus2to8](./export/CH_T1000_PumpON01_20_2_0_1secHeight_minus2to8.png)
+
+---
+
