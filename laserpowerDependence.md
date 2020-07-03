@@ -157,6 +157,21 @@ sim_HD1.draw_laserPower_vs_v_J_1secHeight(2,0)
 
 ## SH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
 wavelength of the pumping laser : 2.09 μm
+### laser power vs time for 99.0% of ion to be in the ground state
+#### Code
+```
+from molecular_data import SH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol7 = SH(T_init = 300)
+sim_SH1 = molecular_rotational_cooling(mol7)
+sim_SH1.draw_laserPower_vs_groundTime(0.99, "./export/SH_T300_PumpON01_20_99groundtime.png")
+```
+
+#### Result
+![SH_T300_PumpON01_20_99groundtime](./export/SH_T300_PumpON01_20_99groundtime.png)
+
+---
+
 ### time vs population of (v,J)=(2,0) for each laser power
 #### Code
 ```
@@ -220,6 +235,20 @@ sim_SH1.draw_laserPower_vs_v_J_1secHeight(2,0)
 
 ## CH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
 wavelength of the pumping laser : 1.86 μm
+#### Code
+```
+from molecular_data import CH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol10 = CH(T_init = 1000)
+sim_CH1 = molecular_rotational_cooling(mol10)
+sim_CH1.draw_laserPower_vs_groundTime(0.99, "./export/CH_T1000_PumpON01_20_99groundtime.png")
+```
+
+#### Result
+![CH_T1000_PumpON01_20_99groundtime](./export/CH_T1000_PumpON01_20_99groundtime.png)
+
+---
+
 ### time vs population of (v,J)=(2,0) for each laser power
 #### Code
 ```
