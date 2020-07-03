@@ -80,6 +80,21 @@ sim_CaH1.draw_laserPower_vs_v_J_1secHeight(2,0)
 
 ## HD+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 1000 K
 wavelength of the pumping laser : 2.68 μm
+### laser power vs time for 99.0% of ion to be in the ground state
+#### Code
+```
+from molecular_data import HD
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol3 = HD(T_init = 1000)
+sim_HD3 = molecular_rotational_cooling(mol3)
+sim_HD3.draw_laserPower_vs_groundTime(0.99, "./export/HD_T1000_PumpON01_20_99groundtime.png")
+```
+
+#### Result
+![HD_T1000_PumpON01_20_99groundtime](./export/HD_T1000_PumpON01_20_99groundtime.png)
+
+---
+
 ### time vs population of (v,J)=(2,0) for each laser power
 #### Code
 ```
