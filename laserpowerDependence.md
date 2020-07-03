@@ -3,6 +3,21 @@ Example of simulation for molecular rotational cooling dependent on laser power
 
 ## CaH+, pumping ON (v=0,J=1 -> v=2,J=0), Initial vibrational temperature: 300 K
 wavelength of the pumping laser : 3.52 μm
+### laser power vs time for 98.0% of ion to be in the ground state
+#### Code
+```
+from molecular_data import CaH
+from molecular_rotational_cooling import molecular_rotational_cooling
+mol0 = CaH(T_init = 300)
+sim_CaH0 = molecular_rotational_cooling(mol0)
+sim_CaH0.draw_laserPower_vs_groundTime(0.98, "./export/CaH_T300_PumpON01_20_98groundtime.png")
+```
+
+#### Result
+![CaH_T300_PumpON01_20_98groundtime](./export/CaH_T300_PumpON01_20_98groundtime.png)
+
+---
+
 ### time vs population of (v,J)=(2,0) for each laser power
 #### Code
 ```

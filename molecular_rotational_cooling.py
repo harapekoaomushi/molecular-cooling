@@ -207,7 +207,7 @@ class molecular_rotational_cooling:
     def run_laserPower_vs_groundTime(self,threshold=0.99):
         #laserPower = np.linspace(0,0.1,50)
         #laserPower = np.logspace(4,6,100)
-        laserPower = np.logspace(-1,4,100)
+        laserPower = np.logspace(-5,1,100)
         groundTime = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
