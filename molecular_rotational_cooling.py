@@ -191,10 +191,10 @@ class molecular_rotational_cooling:
         
         laser_Power_spectrum_FWHM_MHz = 30 # [MHz]
         
-        laser_Power_spectrum_FWHM = ((laser_Power_spectrum_FWHM_MHz * 1e6 * ((pumping_wave_length * 1e-9) ** 2)) / sciconst.c) * 1e9 # [nm]
+        laser_Power_spectrum_FWHM = ((laser_Power_spectrum_FWHM_MHz * 1e6 * ((pumping_wave_length * 1e-9) ** 2)) / sciconst.c) # [m]
         pumping_laser_Power_per_volume = (pumping_laser_Power / sciconst.c) * 1e6 * 1e-3 # [J/m^3]
-        pumping_laser_PSD_Wm3nm = pumping_laser_Power_per_volume / laser_Power_spectrum_FWHM  #[J/m^3/nm]
-        pumping_laser_PSD_Wm3nm_average = pumping_laser_PSD_Wm3nm * (0.7/2.965) # [J/m^3/nm]
+        pumping_laser_PSD_Wm3nm = pumping_laser_Power_per_volume / laser_Power_spectrum_FWHM  #[J/m^4]
+        pumping_laser_PSD_Wm3nm_average = pumping_laser_PSD_Wm3nm * (0.7/2.965) # [J/m^4]
         
         
         var_init = list(self.Boltzmann_plot[:self.J_num[0]]) + [0] * (self.J_num[1] + self.J_num[2])
@@ -298,7 +298,7 @@ class molecular_rotational_cooling:
     
     
     def draw_v_J_eachlaserPower(self, v, J, t_max=1500):
-        laserPower = np.logspace(2,8,10)
+        laserPower = np.logspace(-3,1,10)
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
             plt.plot(self.result_t, self.result_y[:, sum(self.J_num[:v])+J], label=r"Laser Power:{:.2e} mW/mm$^2$".format(Power))
@@ -313,7 +313,7 @@ class molecular_rotational_cooling:
         plt.close('all')
     
     def draw_laserPower_vs_v_J_peakTime(self, v, J, t_max=1500):
-        laserPower = np.logspace(-2,8,50)
+        laserPower = np.logspace(-5,1,50)
         v_J_peakTime = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
@@ -332,7 +332,7 @@ class molecular_rotational_cooling:
         plt.close('all')
     
     def draw_laserPower_vs_v_J_peakHeight(self, v, J, t_max=1500):
-        laserPower = np.logspace(-2,8,50)
+        laserPower = np.logspace(-5,1,50)
         v_J_peakHeight = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1500, pumping_laser_Power = Power)
@@ -351,7 +351,7 @@ class molecular_rotational_cooling:
         plt.close('all')
     
     def draw_laserPower_vs_v_J_1secHeight(self, v, J, t_max=1500):
-        laserPower = np.logspace(-2,8,50)
+        laserPower = np.logspace(-5,1,50)
         v_J_1secHeight = []
         for Power in laserPower:
             self.run_laser_power(vJ_pump_i=[0,1], vJ_pump_f=[2,0], t_max=1, pumping_laser_Power = Power)
